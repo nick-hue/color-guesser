@@ -1,11 +1,9 @@
 import tkinter as tk
 import customtkinter as ctk
 import random 
-import math
 
 WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 500
-
 SLIDER_WIDTH = 300
 
 # FONTS 
@@ -21,8 +19,6 @@ class App(ctk.CTk):
         # configure window
         self.title("Color Matcher")
         self.resizable(False,False)
-        #self.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
-
 
         #self.grid_columnconfigure(0, weight=1)
 

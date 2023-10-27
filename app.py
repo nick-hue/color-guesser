@@ -130,7 +130,8 @@ class App(ctk.CTk):
         guess_colors = self.get_guess_colors()
 
         if correct_colors[0] == guess_colors[0] and correct_colors[1] == guess_colors[1] and correct_colors[2] == guess_colors[2]:
-            print('YOU ARE CORRECT\nScore: 100%')
+            self.score_label.configure(text='100', text_color='green')
+            print('YOU ARE CORRECT\nScore: 100')
         else:
             score = self.get_score(correct_colors, guess_colors)
             self.score_label.configure(text=score)

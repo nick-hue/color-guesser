@@ -82,6 +82,7 @@ class App(ctk.CTk):
         self.submit_button = ctk.CTkButton(self.button_frame, height = 125, width = 250, text = "Submit", font = BUTTON_FONT,command=self.submit_answer)
         self.submit_button.grid(row=0,column=0, padx = 25)
 
+    # upgrades the color of the guess with every tick of the slider
     def update_color(self, value):
         r,g,b = self.get_guess_colors()
         color = self.make_color(r,g,b)
@@ -90,20 +91,24 @@ class App(ctk.CTk):
         self.slider_green_value.configure(text=int(self.slider_green.get()))
         self.slider_blue_value.configure(text=int(self.slider_blue.get()))
 
+    # returns the hexidecimal representaion of the RGB value of the color
     def make_color(self, r, g, b):
         color = f"#{r:02x}{g:02x}{b:02x}"
         print(color)
         return color
     
+    # returns the RGB value of the current guess color
     def get_guess_colors(self):
         return int(self.slider_red.get()), int(self.slider_green.get()), int(self.slider_blue.get())
     
+    # gets a random color for the color we want to guess
     def get_random_color(self):
         self.answer_red = random.randint(0, 255)
         self.answer_green = random.randint(0, 255)
         self.answer_blue = random.randint(0, 255)
         return self.make_color(self.answer_red, self.answer_green, self.answer_blue)
     
+    # get score for a single color
     def get_color_score(self, correct, guess):
         # a = [ (x - y)/x ]
         max_num = max(correct, guess)
@@ -112,12 +117,14 @@ class App(ctk.CTk):
         # print(deviation)
         return 1 - deviation
 
+    # gets score of current guess
     def get_score(self, correct, guess):
         final_score = 0
         for i in range(len(correct)):
             final_score += self.get_color_score(correct[i], guess[i])
         return f"{(final_score / 3)*100:.2f}"
 
+    # check if the guess is correct and displays the score of the current guess
     def submit_answer(self):
         print(f"Correct color: {self.answer_red}|{self.answer_green}|{self.answer_blue}")
         print(f"Guess Color: {int(self.slider_red.get())}|{int(self.slider_green.get())}|{int(self.slider_blue.get())}")

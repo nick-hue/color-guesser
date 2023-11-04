@@ -5,6 +5,8 @@ import random
 WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 500
 SLIDER_WIDTH = 300
+BUTTON_WIDTH = 30
+BUTTON_HEIGHT = 25
 
 # FONTS 
 SLIDER_INFO_FONT = ("Arial", 16, 'bold')
@@ -20,7 +22,7 @@ class App(ctk.CTk):
         self.title("Color Matcher")
         self.resizable(False,False)
 
-        #self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure((0,1), weight=1)
 
         # FRAMES
         self.game_frame = ctk.CTkFrame(self, corner_radius=0)
@@ -35,7 +37,8 @@ class App(ctk.CTk):
 
         self.slider_frame = ctk.CTkFrame(self, corner_radius=0)
         self.slider_frame.grid(row=1,column=0, sticky = 'nswe')
-        self.slider_frame.grid_columnconfigure((0,1,2), weight=1)
+        #self.slider_frame.grid_columnconfigure(1, weight=1)
+        #self.slider_frame.grid_columnconfigure((0), weight=0)
 
         self.button_frame = ctk.CTkFrame(self, corner_radius=0)
         self.button_frame.grid(row=1,column=1, sticky = 'nswe')
@@ -59,28 +62,54 @@ class App(ctk.CTk):
         
         # RED SLIDER
         ctk.CTkLabel(self.slider_frame, text = "RED", justify="left", font = SLIDER_INFO_FONT).grid(row=0, column=0, padx=10)
+
+        self.minus_button_red = ctk.CTkButton(self.slider_frame, text = "-", width = BUTTON_WIDTH, height = BUTTON_HEIGHT, anchor='center', font = BUTTON_FONT, command=self.minus_color)
+        self.minus_button_red.grid(row=0,column=1, padx=5)
         self.slider_red = ctk.CTkSlider(self.slider_frame, from_=0, to=255, number_of_steps=256, width = SLIDER_WIDTH, command=self.update_color)
-        self.slider_red.grid(row=0,column=1, sticky='e',pady = 25)
+        self.slider_red.grid(row=0,column=2, sticky='ew',pady = 25)
+        self.plus_button_red = ctk.CTkButton(self.slider_frame, text = "+", width = BUTTON_WIDTH, height = BUTTON_HEIGHT, anchor='center', font = BUTTON_FONT)
+        self.plus_button_red.grid(row=0,column=3, sticky='e',padx=5)
         self.slider_red_value = ctk.CTkLabel(self.slider_frame, text = "", justify="center", font = SLIDER_INFO_FONT)
-        self.slider_red_value.grid(row=0, column=2, padx=10)
+        self.slider_red_value.grid(row=0, column=4, padx=10)
 
         # GREEN SLIDER
         ctk.CTkLabel(self.slider_frame, text = "GREEN", justify="left", font = SLIDER_INFO_FONT).grid(row=1, column=0, padx=10)
+        self.minus_button_green = ctk.CTkButton(self.slider_frame, text = "-", width = BUTTON_WIDTH, height = BUTTON_HEIGHT, anchor='center', font = BUTTON_FONT)
+        self.minus_button_green.grid(row=1,column=1, padx=5)
         self.slider_green = ctk.CTkSlider(self.slider_frame, from_=0, to=255, number_of_steps=256, width = SLIDER_WIDTH, command=self.update_color)
-        self.slider_green.grid(row=1,column=1, sticky='e', pady = 25)
+        self.slider_green.grid(row=1,column=2, sticky='ew', pady = 25)
+        self.plus_button_green = ctk.CTkButton(self.slider_frame, text = "+", width = BUTTON_WIDTH, height = BUTTON_HEIGHT, anchor='center', font = BUTTON_FONT)
+        self.plus_button_green.grid(row=1,column=3, sticky='e',padx=5)
         self.slider_green_value = ctk.CTkLabel(self.slider_frame, text = "", justify="left", font = SLIDER_INFO_FONT)
-        self.slider_green_value.grid(row=1, column=2, padx=10)
+        self.slider_green_value.grid(row=1, column=4, padx=10)
 
         # BLUE SLIDER
         ctk.CTkLabel(self.slider_frame, text = "BLUE", justify="left", font = SLIDER_INFO_FONT).grid(row=2, column=0, padx=10)
+        self.minus_button_blue = ctk.CTkButton(self.slider_frame, text = "-", width = BUTTON_WIDTH, height = BUTTON_HEIGHT, anchor='center', font = BUTTON_FONT)
+        self.minus_button_blue.grid(row=2,column=1, sticky='e',padx=5)
         self.slider_blue = ctk.CTkSlider(self.slider_frame, from_=0, to=255, number_of_steps=256, width = SLIDER_WIDTH, command=self.update_color)
-        self.slider_blue.grid(row=2,column=1, sticky='e', pady = 25)
+        self.slider_blue.grid(row=2,column=2, sticky='ew', pady = 25)
+        self.plus_button_blue = ctk.CTkButton(self.slider_frame, text = "+", width = BUTTON_WIDTH, height = BUTTON_HEIGHT, anchor='center', font = BUTTON_FONT)
+        self.plus_button_blue.grid(row=2,column=3, sticky='e',padx=5)
         self.slider_blue_value = ctk.CTkLabel(self.slider_frame, text = "", justify="left", font = SLIDER_INFO_FONT)
-        self.slider_blue_value.grid(row=2, column=2, padx=10)
+        self.slider_blue_value.grid(row=2, column=4, padx=10)
 
         # SUBMIT FRAME WIDGETS
         self.submit_button = ctk.CTkButton(self.button_frame, height = 125, width = 250, text = "Submit", font = BUTTON_FONT,command=self.submit_answer)
         self.submit_button.grid(row=0,column=0, padx = 25)
+
+    def minus_color(self, color):
+        match color:
+            case "red":
+                self.slider_red.set(self.slider_red.get()-1)
+            case "green":
+                self.slider_blue.set(self.slider_blue.get()-1)
+            case "blue":
+                self.slider_blue.set(self.slider_blue.get()-1)
+            case _:
+                print("Error: not right color.")
+
+
 
     # upgrades the color of the guess with every tick of the slider
     def update_color(self, value):
